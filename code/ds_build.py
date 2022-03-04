@@ -27,9 +27,8 @@ val_ds = image_dataset_from_directory(
     subset= "validation"
 )
 
-normalization_layer = Rescaling(1./255)
-
 # normalizating the database
+normalization_layer = Rescaling(1./255)
 normalized_ds = train_ds.map(lambda x: (normalization_layer(x)))
 
 # configuring the dataset for better performing (prefetch overlaps data preprocessing and model execution during training)
