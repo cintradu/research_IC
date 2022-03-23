@@ -1,4 +1,4 @@
 Projeto.pdf
-dataset
-/code/__pycache__
-/code/dataset.npy
+dataset/
+code/__pycache__
+code/dataset.npy
