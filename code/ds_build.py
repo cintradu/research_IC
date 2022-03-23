@@ -1,38 +1,24 @@
-import tensorflow as tf
-from tensorflow.keras.utils import image_dataset_from_directory
-from tensorflow.keras.layers import Rescaling
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt 
+import random
+import os
+
+DATADIR = '/home/luis/Desktop/IC/dataset'
+CATEGORIES = ['rgb']
 
 
-# creating a dataset with the robot images
-img_height = 270
-img_width = 440
+training_data= []
 
-# 80% for training and 20% for validation
-train_ds = image_dataset_from_directory(
-    '/home/luis/Desktop/IC/dataset',  
-    labels= None,
-    batch_size= None,
-    image_size= (img_height, img_width),
-    seed = 123,
-    validation_split= 0.2,
-    subset= "training"
-)
-val_ds = image_dataset_from_directory(
-    '/home/luis/Desktop/IC/dataset',
-    labels= None,
-    batch_size= None,
-    image_size= (img_height, img_width),
-    seed = 123,
-    validation_split= 0.2,
-    subset= "validation"
-)
+for category in CATEGORIES:
+    path = os.path.join(DATADIR, category)
 
-# normalizating the database
-normalization_layer = Rescaling(1./255)
-normalized_ds = train_ds.map(lambda x: (normalization_layer(x)))
+    for img in os.listdir(path):
+        
+        img_array = cv2.imread(os.path.join(path, img), cv2.IMREAD_GRAYSCALE)
+        img_array = cv2.normalize(img_array, img_array, 0, 255, cv2.NORM_MINMAX)
+        training_data.append(img_array)
+        
+random.shuffle(training_data)
 
-# configuring the dataset for better performing (prefetch overlaps data preprocessing and model execution during training)
-AUTOTUNE = tf.data.AUTOTUNE 
-
-train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
-val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)
+np.save("dataset.npy", training_data)
