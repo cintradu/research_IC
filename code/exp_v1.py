@@ -1,5 +1,3 @@
-from json import decoder
-from cupshelpers import activateNewPrinter
 import numpy as np
 
 from tensorflow.keras import Model
@@ -7,12 +5,10 @@ from tensorflow.keras import Input
 from tensorflow.keras.layers import Conv2D, Conv2DTranspose, Flatten, MaxPool2D, UpSampling2D, Reshape
 from tensorflow.keras.losses import BinaryCrossentropy
 from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.optimizers.schedules import PolynomialDecay
 
 
 dataset = np.load("dataset.npy")
 
-#lr = PolynomialDecay(1e-5, 10000, 1e-6, power= 0.5)
 opt = Adam(learning_rate= 1e-5)
 loss = BinaryCrossentropy()
 
