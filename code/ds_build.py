@@ -3,22 +3,34 @@ import cv2
 import matplotlib.pyplot as plt 
 import random
 import os
-
-DATADIR = '/home/luis/Desktop/IC/dataset'
-CATEGORIES = ['rgb']
+from tensorflow.keras.utils import Sequence
 
 
-training_data= []
+DATADIR = '/home/luis/Desktop/IC/dataset/rgb'
 
-for category in CATEGORIES:
-    path = os.path.join(DATADIR, category)
+all_images = []
 
-    for img in os.listdir(path):
-        
-        img_array = cv2.imread(os.path.join(path, img), cv2.IMREAD_GRAYSCALE)
-        img_array = cv2.normalize(img_array, img_array, 0, 255, cv2.NORM_MINMAX)
-        training_data.append(img_array)
-        
-random.shuffle(training_data)
+img_folder = os.listdir(DATADIR)
 
-np.save("dataset.npy", training_data)
+for img in img_folder:
+    img_path = os.path.join(DATADIR, img)
+    all_images.append(img_path)
+
+class My_Custom_Generator(Sequence) :
+
+    def __init__(self, image_filenames, batch_size) :
+        self.image_filenames = image_filenames
+        self.batch_size = batch_size
+
+    def __len__(self) :
+        return (np.ceil(len(self.image_filenames) / float(self.batch_size))).astype(np.int)
+
+    def __getitem__(self, idx) :
+        batch_x = self.image_filenames[idx * self.batch_size : (idx+1) * self.batch_size]
+        batch_x = np.array([np.reshape(cv2.cvtColor(plt.imread(str(file_name)), cv2.COLOR_RGB2GRAY),(270,440,1)) for file_name in batch_x])/255.
+
+        return batch_x, batch_x
+
+random.shuffle(all_images)
+
+dataset = all_images
