@@ -1,11 +1,11 @@
 from tensorflow.keras import Model
 from tensorflow.keras import Input
-from tensorflow.keras.layers import Conv2D, Conv2DTranspose, Flatten, MaxPool2D, UpSampling2D, Reshape
+from tensorflow.keras.layers import Conv2D, Conv2DTranspose, Flatten, Reshape
 from tensorflow.keras.losses import MeanSquaredError
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.optimizers.schedules import ExponentialDecay
-import ds_build as ds
 
+import ds_build as ds
 
 epochs = 150
 batchsize = 32
