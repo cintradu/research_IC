@@ -27,7 +27,7 @@ class My_Custom_Generator(Sequence) :
 
     def __getitem__(self, idx) :
         batch_x = self.image_filenames[idx * self.batch_size : (idx+1) * self.batch_size]
-        batch_x = np.array([np.reshape(cv2.cvtColor(plt.imread(str(file_name)), cv2.COLOR_RGB2GRAY),(270,440,1)) for file_name in batch_x])/255.
+        batch_x = np.array([np.reshape(cv2.cvtColor(plt.imread(str(file_name)), cv2.COLOR_RGB2GRAY),(270,440,1)) for file_name in batch_x])
 
         return batch_x, batch_x
 
